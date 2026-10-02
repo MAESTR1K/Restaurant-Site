@@ -58,4 +58,11 @@
 
 ---
 
-## 📁 Структура проекта
+
+## 🚀 Запуск локально
+
+```bash
+git clone https://github.com/MAESTR1K/Restaurant-Site.git
+cd Restaurant-Site
+
+
