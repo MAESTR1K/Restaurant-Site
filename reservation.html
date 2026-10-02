@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронь столика - Ресторан "Иль-де-франс"</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .reservation-page {
+            padding: 60px 0;
+            background-color: var(--beige);
+        }
+        
+        .reservation-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .reservation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .reservation-header h2 {
+            color: var(--primary-brown);
+        }
+        
+        .reservation-form {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-brown);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--dark-beige);
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background-color: var(--beige);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-submit {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .form-submit .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+        }
+        
+        .reservation-info {
+            background-color: var(--dark-beige);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        
+        .reservation-info h3 {
+            color: var(--primary-brown);
+            margin-bottom: 15px;
+        }
+        
+        .reservation-info ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        
+        .reservation-info li {
+            margin-bottom: 10px;
+        }
+        
+        .notification-area {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .notification {
+            background-color: var(--primary-brown);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .notification.success {
+            background-color: #27ae60;
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+        }
+        
+        .notification i {
+            font-size: 1.2rem;
+        }
+        
+        .close-notification {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: auto;
+            font-size: 1.2rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .reservation-form {
+                padding: 25px;
+            }
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Иль-де-франс</h1>
+                </div>
+                <p class="slogan">Вкус средневековой Франции в сердце Великого Новгорода</p>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="menu.html"><i class="fas fa-utensils"></i> Меню</a></li>
+                    <li><a href="reservation.html" class="active"><i class="fas fa-calendar-alt"></i> Бронь столика</a></li>
+                    <li><a href="check.html"><i class="fas fa-receipt"></i> Чек</a></li>
+                    <li><a href="index.html#contacts"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-info">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <p>Пн-Чт: 11:30-19:30</p>
+                        <p>Пт: 11:30-02:00</p>
+                        <p>Сб: 17:00-02:00</p>
+                        <p>Вс: по предв. заказу</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <p>г. Великий Новгород</p>
+                        <p>ул. Великая, д. 22</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p>+7 (8162) 55-55-55</p>
+                        <p>info@iledefrance.ru</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="notification-area" class="notification-area"></div>
+
+    <main class="reservation-page">
+        <div class="container">
+            <div class="reservation-container">
+                <div class="reservation-header">
+                    <h2>Бронирование столика</h2>
+                    <p>Забронируйте столик в ресторане "Иль-де-франс" онлайн</p>
+                </div>
+                
+                <form id="reservation-form" class="reservation-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-date" class="required"><i class="fas fa-calendar-day"></i> Дата посещения</label>
+                            <input type="date" id="reservation-date" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reservation-time" class="required"><i class="fas fa-clock"></i> Время</label>
+                            <select id="reservation-time" class="form-control" required>
+                                <option value="">Выберите время</option>
+                                <option value="11:30">11:30</option>
+                                <option value="12:00">12:00</option>
+                                <option value="12:30">12:30</option>
+                                <option value="13:00">13:00</option>
+                                <option value="13:30">13:30</option>
+                                <option value="14:00">14:00</option>
+                                <option value="14:30">14:30</option>
+                                <option value="15:00">15:00</option>
+                                <option value="15:30">15:30</option>
+                                <option value="16:00">16:00</option>
+                                <option value="16:30">16:30</option>
+                                <option value="17:00">17:00</option>
+                                <option value="17:30">17:30</option>
+                                <option value="18:00">18:00</option>
+                                <option value="18:30">18:30</option>
+                                <option value="19:00">19:00</option>
+                                <option value="19:30">19:30</option>
+                                <option value="20:00">20:00</option>
+                                <option value="20:30">20:30</option>
+                                <option value="21:00">21:00</option>
+                                <option value="21:30">21:30</option>
+                                <option value="22:00">22:00</option>
+                                <option value="22:30">22:30</option>
+                                <option value="23:00">23:00</option>
+                                <option value="23:30">23:30</option>
+                                <option value="00:00">00:00</option>
+                                <option value="00:30">00:30</option>
+                                <option value="01:00">01:00</option>
+                                <option value="01:30">01:30</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-guests" class="required"><i class="fas fa-users"></i> Количество гостей</label>
+                            <select id="reservation-guests" class="form-control" required>
+                                <option value="">Выберите количество</option>
+                                <option value="1">1 гость</option>
+                                <option value="2">2 гостя</option>
+                                <option value="3">3 гостя</option>
+                                <option value="4">4 гостя</option>
+                                <option value="5">5 гостей</option>
+                                <option value="6">6 гостей</option>
+                                <option value="7">7 гостей</option>
+                                <option value="8">8 гостей</option>
+                                <option value="9">9 гостей</option>
+                                <option value="10">10 гостей</option>
+                                <option value="11-15">11-15 гостей</option>
+                                <option value="16-20">16-20 гостей</option>
+                                <option value="20+">Более 20 гостей</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reservation-phone" class="required"><i class="fas fa-phone"></i> Телефон</label>
+                            <input type="tel" id="reservation-phone" class="form-control" placeholder="+7 (999) 999-99-99" required pattern="^(\+7|8)[\s(]*\d{3}[)\s]*\d{3}[\s-]?\d{2}[\s-]?\d{2}$">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-name" class="required"><i class="fas fa-user"></i> Ваше имя</label>
+                            <input type="text" id="reservation-name" class="form-control" placeholder="Иван Иванов" required minlength="2">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reservation-email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="reservation-email" class="form-control" placeholder="example@mail.ru">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reservation-comments"><i class="fas fa-comment"></i> Дополнительные пожелания</label>
+                        <textarea id="reservation-comments" class="form-control" placeholder="Укажите особые пожелания (аллергии, особые случаи, предпочтения по расположению столика и т.д.)"></textarea>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calendar-check"></i> Забронировать столик
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="reservation-info">
+                    <h3>Правила бронирования</h3>
+                    <ul>
+                        <li>Бронь столика подтверждается после звонка администратора</li>
+                        <li>При отмене брони просим сообщить не менее чем за 2 часа</li>
+                        <li>При опоздании более чем на 20 минут бронь аннулируется</li>
+                        <li>В выходные и праздничные дни время бронирования ограничено 2 часами</li>
+                        <li>Для компаний от 8 человек требуется предоплата 30% от суммы заказа</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i>
+                        <h3>Иль-де-франс</h3>
+                    </div>
+                    <p>Французская кухня с 2010 года</p>
+                </div>
+                
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="menu.html">Меню</a></li>
+                        <li><a href="reservation.html">Бронь столика</a></li>
+                        <li><a href="check.html">Чек</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Мы в социальных сетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <p>Подпишитесь на наши новости и акции</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ресторан "Иль-де-франс". Все права защищены.</p>
+                <p>Техническое задание выполнено студентом М.Д. Масловым, группа 5996</p>
+                <p><a href="admin-login.html" class="admin-link"><i class="fas fa-lock"></i> Панель администратора</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reservationForm = document.getElementById('reservation-form');
+            const notificationArea = document.getElementById('notification-area');
+            
+            // Устанавливаем минимальную дату (сегодня) и максимальную (на 3 месяца вперед)
+            const dateInput = document.getElementById('reservation-date');
+            if (dateInput) {
+                const today = new Date();
+                const maxDate = new Date();
+                maxDate.setMonth(today.getMonth() + 3);
+                
+                const todayStr = today.toISOString().split('T')[0];
+                const maxDateStr = maxDate.toISOString().split('T')[0];
+                
+                dateInput.min = todayStr;
+                dateInput.max = maxDateStr;
+                dateInput.value = todayStr; // Устанавливаем сегодняшнюю дату по умолчанию
+            }
+            
+            // Маска для телефона
+            const phoneInput = document.getElementById('reservation-phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    if (value.startsWith('7') || value.startsWith('8')) {
+                        value = value.substring(1);
+                    }
+                    
+                    if (value.length > 0) {
+                        value = '+7 (' + value;
+                        
+                        if (value.length > 7) {
+                            value = value.substring(0, 7) + ') ' + value.substring(7);
+                        }
+                        if (value.length > 12) {
+                            value = value.substring(0, 12) + '-' + value.substring(12);
+                        }
+                        if (value.length > 15) {
+                            value = value.substring(0, 15) + '-' + value.substring(15);
+                        }
+                        if (value.length > 18) {
+                            value = value.substring(0, 18);
+                        }
+                    }
+                    
+                    e.target.value = value;
+                });
+            }
+            
+            if (reservationForm) {
+                reservationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Собираем данные формы
+                    const formData = {
+                        date: document.getElementById('reservation-date').value,
+                        time: document.getElementById('reservation-time').value,
+                        guests: document.getElementById('reservation-guests').value,
+                        phone: document.getElementById('reservation-phone').value,
+                        name: document.getElementById('reservation-name').value.trim(),
+                        email: document.getElementById('reservation-email').value.trim(),
+                        comments: document.getElementById('reservation-comments').value.trim()
+                    };
+                    
+                    // Проверяем обязательные поля
+                    if (!formData.date || !formData.time || !formData.guests || !formData.phone || !formData.name) {
+                        showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                        return;
+                    }
+                    
+                    // Проверяем формат телефона
+                    const phoneRegex = /^(\+7|8)[\s(]*\d{3}[)\s]*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
+                    if (!phoneRegex.test(formData.phone)) {
+                        showNotification('Пожалуйста, введите корректный номер телефона', 'error');
+                        return;
+                    }
+                    
+                    // Проверяем имя (минимум 2 символа)
+                    if (formData.name.length < 2) {
+                        showNotification('Имя должно содержать минимум 2 символа', 'error');
+                        return;
+                    }
+                    
+                    // Проверяем email если он заполнен
+                    if (formData.email && !validateEmail(formData.email)) {
+                        showNotification('Пожалуйста, введите корректный email адрес', 'error');
+                        return;
+                    }
+                    
+                    // Сохраняем бронирование в админку
+                    const success = saveReservationToAdmin(formData);
+                    
+                    if (success) {
+                        // Показываем уведомление об успехе
+                        showNotification('Бронирование отправлено успешно! Мы свяжемся с вами для подтверждения.', 'success');
+                        
+                        // Очищаем форму
+                        reservationForm.reset();
+                        
+                        // Устанавливаем сегодняшнюю дату по умолчанию
+                        if (dateInput) {
+                            const today = new Date().toISOString().split('T')[0];
+                            dateInput.value = today;
+                        }
+                        
+                        // Прокручиваем к началу формы
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        showNotification('Ошибка при отправке бронирования. Попробуйте еще раз.', 'error');
+                    }
+                });
+            }
+            
+            function saveReservationToAdmin(formData) {
+                try {
+                    // Получаем текущие данные админки
+                    let adminData = localStorage.getItem('adminData');
+                    let adminReservations = [];
+                    
+                    if (adminData) {
+                        try {
+                            const parsedData = JSON.parse(adminData);
+                            adminReservations = parsedData.reservations || [];
+                        } catch (e) {
+                            console.error('Ошибка парсинга adminData:', e);
+                            adminReservations = [];
+                        }
+                    }
+                    
+                    // Генерируем ID для бронирования
+                    const newId = adminReservations.length > 0 ? 
+                        Math.max(...adminReservations.map(r => r.id)) + 1 : 2001;
+                    
+                    // Создаем новое бронирование
+                    const newReservation = {
+                        id: newId,
+                        customerName: formData.name,
+                        phone: formData.phone,
+                        date: formData.date,
+                        time: formData.time,
+                        guests: formData.guests,
+                        table: '—',
+                        status: 'pending',
+                        notes: formData.comments || '',
+                        email: formData.email || '',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    // Добавляем новое бронирование
+                    adminReservations.push(newReservation);
+                    
+                    // Обновляем данные админки
+                    if (adminData) {
+                        const parsedData = JSON.parse(adminData);
+                        parsedData.reservations = adminReservations;
+                        localStorage.setItem('adminData', JSON.stringify(parsedData));
+                    } else {
+                        // Если данных админки нет - создаем
+                        const newAdminData = {
+                            orders: [],
+                            menu: [],
+                            reservations: [newReservation],
+                            analytics: { daily: [], weekly: [], monthly: [] }
+                        };
+                        localStorage.setItem('adminData', JSON.stringify(newAdminData));
+                    }
+                    
+                    console.log('Бронирование сохранено в админку:', newReservation);
+                    return true;
+                } catch (error) {
+                    console.error('Ошибка сохранения бронирования в админку:', error);
+                    return false;
+                }
+            }
+            
+            function showNotification(message, type = 'info') {
+                if (!notificationArea) return;
+                
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                    <button class="close-notification">&times;</button>
+                `;
+                
+                notificationArea.appendChild(notification);
+                
+                // Обработчик закрытия
+                notification.querySelector('.close-notification').addEventListener('click', function() {
+                    notification.remove();
+                });
+                
+                // Автоматическое закрытие через 5 секунд
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 5000);
+            }
+            
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+            
+            // Инициализация времени в селекте
+            initTimeOptions();
+            
+            function initTimeOptions() {
+                const timeSelect = document.getElementById('reservation-time');
+                if (!timeSelect) return;
+                
+                // Устанавливаем текущее время + 1 час по умолчанию
+                const now = new Date();
+                let currentHour = now.getHours();
+                let currentMinute = now.getMinutes();
+                
+                // Округляем до ближайших 30 минут
+                if (currentMinute > 30) {
+                    currentHour += 1;
+                    currentMinute = 0;
+                } else {
+                    currentMinute = 30;
+                }
+                
+                // Форматируем время
+                const formattedTime = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+                
+                // Ищем соответствующий вариант в селекте
+                const options = timeSelect.options;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === formattedTime) {
+                        timeSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

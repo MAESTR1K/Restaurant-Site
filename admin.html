@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора - Иль-де-франс</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="auth-check" style="display: none;"></div>
+    
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-header-content">
+                <div class="admin-logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Иль-де-франс <span class="admin-badge">Админ</span></h1>
+                </div>
+                
+                <div class="admin-user">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="admin-username">Администратор</span>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="admin-nav">
+        <div class="container">
+            <ul class="admin-nav-list">
+                <li><a href="#dashboard" class="admin-nav-link active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Панель управления
+                </a></li>
+                <li><a href="#menu" class="admin-nav-link" data-section="menu">
+                    <i class="fas fa-utensils"></i> Меню
+                </a></li>
+                <li><a href="#orders" class="admin-nav-link" data-section="orders">
+                    <i class="fas fa-shopping-cart"></i> Заказы
+                </a></li>
+                <li><a href="#reservations" class="admin-nav-link" data-section="reservations">
+                    <i class="fas fa-calendar-alt"></i> Бронирования
+                </a></li>
+                <li><a href="#analytics" class="admin-nav-link" data-section="analytics">
+                    <i class="fas fa-chart-bar"></i> Аналитика
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="admin-main">
+        <div class="container">
+            <section id="dashboard-section" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Панель управления</h2>
+                    <p>Обзор деятельности ресторана за сегодня</p>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="today-orders">0</h3>
+                            <p>Заказов сегодня</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 12%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="today-visitors">0</h3>
+                            <p>Посетителей сегодня</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 8%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-ruble-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="today-revenue">0 руб.</h3>
+                            <p>Выручка сегодня</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 15%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="table-occupancy">0%</h3>
+                            <p>Загрузка столиков</p>
+                        </div>
+                        <div class="stat-trend down">
+                            <i class="fas fa-arrow-down"></i> 5%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="dashboard-row">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> Загрузка столиков по часам</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="tableOccupancyChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-calendar-check"></i> Последние бронирования</h3>
+                                <button class="btn-sm" id="refresh-reservations">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="reservations-list" id="recent-reservations">
+                                    <div class="loading">Загрузка...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-row">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-star"></i> Популярные блюда сегодня</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="popular-dishes" id="popular-dishes">
+                                    <div class="loading">Загрузка...</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn" data-action="add-dish">
+                                        <i class="fas fa-plus-circle"></i>
+                                        <span>Добавить блюдо</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="add-reservation">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        <span>Добавить бронь</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="view-orders">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        <span>Смотреть заказы</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="generate-report">
+                                        <i class="fas fa-file-export"></i>
+                                        <span>Отчет за день</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="menu-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-utensils"></i> Управление меню</h2>
+                    <p>Добавление, редактирование и удаление блюд</p>
+                </div>
+                
+                <div class="menu-management">
+                    <div class="menu-actions">
+                        <button id="add-dish-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Добавить блюдо
+                        </button>
+                        <div class="menu-filters">
+                            <select id="category-filter" class="form-control">
+                                <option value="">Все категории</option>
+                                <option value="Закуски">Закуски</option>
+                                <option value="Основные блюда">Основные блюда</option>
+                                <option value="Десерты">Десерты</option>
+                                <option value="Напитки">Напитки</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="dishes-list" id="dishes-list">
+                        <div class="loading">Загрузка меню...</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="orders-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-shopping-cart"></i> Управление заказами</h2>
+                    <p>Текущие и завершенные заказы</p>
+                </div>
+                
+                <div class="orders-management">
+                    <div class="orders-tabs">
+                        <button class="order-tab active" data-status="active">Активные (<span id="active-orders-count">0</span>)</button>
+                        <button class="order-tab" data-status="completed">Завершенные (<span id="completed-orders-count">0</span>)</button>
+                        <button class="order-tab" data-status="cancelled">Отмененные (<span id="cancelled-orders-count">0</span>)</button>
+                    </div>
+                    
+                    <div class="orders-list" id="orders-list">
+                        <div class="loading">Загрузка заказов...</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="reservations-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Управление бронированиями</h2>
+                    <p>Просмотр и управление бронированиями столиков</p>
+                </div>
+                
+                <div class="reservations-management">
+                    <div class="reservations-filters">
+                        <div class="filter-group">
+                            <label for="reservation-date-filter">Дата:</label>
+                            <input type="date" id="reservation-date-filter" class="form-control">
+                        </div>
+                        <div class="filter-group">
+                            <label for="reservation-status-filter">Статус:</label>
+                            <select id="reservation-status-filter" class="form-control">
+                                <option value="">Все</option>
+                                <option value="confirmed">Подтвержденные</option>
+                                <option value="pending">Ожидают</option>
+                                <option value="cancelled">Отмененные</option>
+                                <option value="completed">Завершенные</option>
+                            </select>
+                        </div>
+                        <button id="add-reservation-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Добавить бронь
+                        </button>
+                    </div>
+                    
+                    <div class="reservations-list-full" id="reservations-list-full">
+                        <div class="loading">Загрузка бронирований...</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="analytics-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> Аналитика и отчеты</h2>
+                    <p>Статистика и аналитические отчеты</p>
+                </div>
+                
+                <div class="analytics-content">
+                    <div class="analytics-filters">
+                        <div class="filter-group">
+                            <label for="analytics-period">Период:</label>
+                            <select id="analytics-period" class="form-control">
+                                <option value="today">Сегодня</option>
+                                <option value="week">Неделя</option>
+                                <option value="month" selected>Месяц</option>
+                                <option value="quarter">Квартал</option>
+                                <option value="year">Год</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="report-type">Тип отчета:</label>
+                            <select id="report-type" class="form-control">
+                                <option value="sales">Продажи</option>
+                                <option value="visitors">Посетители</option>
+                                <option value="popular">Популярные блюда</option>
+                                <option value="revenue">Выручка</option>
+                            </select>
+                        </div>
+                        <button id="generate-analytics-btn" class="btn btn-primary">
+                            <i class="fas fa-chart-bar"></i> Сгенерировать отчет
+                        </button>
+                        <button id="export-report-btn" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Экспорт в PDF
+                        </button>
+                    </div>
+                    
+                    <div class="analytics-charts">
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        
+                        <div class="analytics-stats">
+                            <div class="stat-box">
+                                <h4>Общая выручка</h4>
+                                <p class="stat-value" id="total-revenue">0 руб.</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4>Средний чек</h4>
+                                <p class="stat-value" id="average-check">0 руб.</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4>Количество заказов</h4>
+                                <p class="stat-value" id="total-orders">0</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4>Популярное блюдо</h4>
+                                <p class="stat-value" id="top-dish">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-table">
+                        <h3>Детальная статистика</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Заказы</th>
+                                    <th>Посетители</th>
+                                    <th>Выручка</th>
+                                    <th>Средний чек</th>
+                                    <th>Загрузка</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-table-body">
+                                <tr>
+                                    <td colspan="6">Загрузка данных...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <div id="dish-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="dish-modal-title">Добавить блюдо</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="dish-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dish-name">Название блюда *</label>
+                            <input type="text" id="dish-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dish-price">Цена (руб.) *</label>
+                            <input type="number" id="dish-price" class="form-control" min="0" step="10" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dish-category">Категория *</label>
+                        <select id="dish-category" class="form-control" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="Закуски">Закуски</option>
+                            <option value="Основные блюда">Основные блюда</option>
+                            <option value="Десерты">Десерты</option>
+                            <option value="Напитки">Напитки</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dish-description">Описание</label>
+                        <textarea id="dish-description" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dish-image">URL изображения</label>
+                        <input type="url" id="dish-image" class="form-control" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dish-weight">Вес/порция</label>
+                        <input type="text" id="dish-weight" class="form-control" placeholder="250 г">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="dish-available" checked> Доступно для заказа
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="reservation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="reservation-modal-title">Добавить бронирование</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reservation-form-modal">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-customer">Имя клиента *</label>
+                            <input type="text" id="reservation-customer" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation-phone">Телефон *</label>
+                            <input type="tel" id="reservation-phone" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-date-modal">Дата *</label>
+                            <input type="date" id="reservation-date-modal" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation-time-modal">Время *</label>
+                            <select id="reservation-time-modal" class="form-control" required>
+                                <option value="">Выберите время</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-guests-modal">Количество гостей *</label>
+                            <select id="reservation-guests-modal" class="form-control" required>
+                                <option value="">Выберите количество</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11-15">11-15</option>
+                                <option value="16-20">16-20</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation-table">Номер столика</label>
+                            <input type="text" id="reservation-table" class="form-control" placeholder="По умолчанию">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reservation-notes">Примечания</label>
+                        <textarea id="reservation-notes" class="form-control" rows="3" placeholder="Особые пожелания или комментарии"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reservation-status">Статус</label>
+                        <select id="reservation-status" class="form-control">
+                            <option value="pending">Ожидает подтверждения</option>
+                            <option value="confirmed">Подтверждено</option>
+                            <option value="cancelled">Отменено</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="order-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Детали заказа #<span id="order-id-display">0</span></h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="admin-script.js"></script>
+    <script>
+    
+        document.addEventListener('DOMContentLoaded', function() {
+           
+            checkAdminAuth();
+            
+            initAdminPanel();
+            
+            loadDashboardData();
+            loadMenuData();
+            loadOrdersData();
+            loadReservationsData();
+            loadAnalyticsData();
+        });
+    </script>
+</body>
+</html>

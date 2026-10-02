@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню - Ресторан "Иль-де-франс"</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .menu-page {
+            padding: 60px 0;
+            background-color: var(--beige);
+        }
+        
+        .menu-category {
+            margin-bottom: 50px;
+        }
+        
+        .menu-category h2 {
+            color: var(--primary-brown);
+            border-bottom: 2px solid var(--dark-beige);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-image img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-brown);
+        }
+        
+        .menu-item-price {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+        
+        .menu-item-description {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .menu-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .menu-item-weight {
+            font-size: 0.9rem;
+            color: var(--light-brown);
+        }
+        
+        .add-to-order {
+            background-color: var(--primary-brown);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .add-to-order:hover {
+            background-color: var(--light-brown);
+        }
+        
+        .add-to-order.added {
+            background-color: #2E7D32;
+        }
+        
+        .order-sidebar {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px var(--shadow);
+            margin-top: 30px;
+        }
+        
+        .order-sidebar h3 {
+            color: var(--primary-brown);
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .order-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--beige);
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .order-item-quantity {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .order-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .order-item-price {
+            font-weight: 600;
+            color: var(--primary-brown);
+        }
+        
+        .remove-order-item {
+            background: none;
+            border: none;
+            color: var(--light-brown);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        
+        .remove-order-item:hover {
+            color: var(--primary-brown);
+            background-color: #f5f5f5;
+        }
+        
+        .order-total {
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-brown);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--dark-beige);
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .order-actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .cart-count {
+            background-color: var(--gold);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        @media (min-width: 992px) {
+            .menu-container {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 40px;
+            }
+            
+            .order-sidebar {
+                margin-top: 0;
+                position: sticky;
+                top: 20px;
+                align-self: start;
+            }
+        }
+        
+        .empty-order {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Иль-де-франс</h1>
+                </div>
+                <p class="slogan">Вкус средневековой Франции в сердце Великого Новгорода</p>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="menu.html" class="active"><i class="fas fa-utensils"></i> Меню</a></li>
+                    <li><a href="reservation.html"><i class="fas fa-calendar-alt"></i> Бронь столика</a></li>
+                    <li><a href="check.html"><i class="fas fa-receipt"></i> Чек</a></li>
+                    <li><a href="index.html#contacts"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-info">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <p>Пн-Чт: 11:30-19:30</p>
+                        <p>Пт: 11:30-02:00</p>
+                        <p>Сб: 17:00-02:00</p>
+                        <p>Вс: по предв. заказу</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <p>г. Великий Новгород</p>
+                        <p>ул. Великая, д. 22</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p>+7 (8162) 55-55-55</p>
+                        <p>info@iledefrance.ru</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="menu-page">
+        <div class="container">
+            <div class="menu-container">
+                <div class="menu-content">
+                    <h2>Наше меню</h2>
+                    <p>Блюда, приготовленные по старинным французским рецептам эпохи средневековья</p>
+                    
+                    <div class="menu-category">
+                        <h2>Закуски</h2>
+                        <div class="menu-items">
+                            <div class="menu-item" data-id="1" data-name="Террин из утки" data-price="890">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1480&q=80" alt="Террин из утки">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Террин из утки</h3>
+                                        <span class="menu-item-price">890 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Террин из утиной печени с травами и коньяком, подается с тостами и ягодным соусом</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">250 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="2" data-name="Луковый суп" data-price="650">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Луковый суп">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Луковый суп</h3>
+                                        <span class="menu-item-price">650 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Классический французский луковый суп с гренками и расплавленным сыром</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">350 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="3" data-name="Эскарго" data-price="950">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Эскарго">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Эскарго</h3>
+                                        <span class="menu-item-price">950 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Улитки по-бургундски с чесночным маслом и зеленью</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">6 шт</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h2>Основные блюда</h2>
+                        <div class="menu-items">
+                            <div class="menu-item" data-id="4" data-name="Утиная ножка конфи" data-price="1850">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Утиная ножка конфи">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Утиная ножка конфи</h3>
+                                        <span class="menu-item-price">1850 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Утиная ножка, томленная в собственном жире с травами, подается с картофелем и соусом из красного вина</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">450 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="5" data-name="Беф бургиньон" data-price="1650">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1476&q=80" alt="Беф бургиньон">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Беф бургиньон</h3>
+                                        <span class="menu-item-price">1650 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Тушеная говядина в красном вине с луком, морковью и грибами</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">400 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="6" data-name="Рататуй" data-price="1250">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1481&q=80" alt="Рататуй">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Рататуй</h3>
+                                        <span class="menu-item-price">1250 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Овощное рагу из баклажанов, кабачков, перцев и томатов с прованскими травами</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">350 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h2>Десерты</h2>
+                        <div class="menu-items">
+                            <div class="menu-item" data-id="7" data-name="Крем-брюле" data-price="750">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1374&q=80" alt="Крем-брюле">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Крем-брюле</h3>
+                                        <span class="menu-item-price">750 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Ванильный крем с хрустящей карамельной корочкой</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">180 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="8" data-name="Профитроли" data-price="850">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1389&q=80" alt="Профитроли">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Профитроли</h3>
+                                        <span class="menu-item-price">850 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Заварные пирожные с кремом и шоколадным соусом</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">5 шт</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item" data-id="9" data-name="Тарт Татен" data-price="790">
+                                <div class="menu-item-image">
+                                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=1365&q=80" alt="Тарт Татен">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="menu-item-header">
+                                        <h3 class="menu-item-name">Тарт Татен</h3>
+                                        <span class="menu-item-price">790 руб.</span>
+                                    </div>
+                                    <p class="menu-item-description">Яблочный пирог с карамелью, подается с шариком ванильного мороженого</p>
+                                    <div class="menu-item-actions">
+                                        <span class="menu-item-weight">250 г</span>
+                                        <button class="add-to-order"><i class="fas fa-plus"></i> Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-sidebar">
+                    <h3>Ваш заказ <span id="cart-count" class="cart-count" style="display: none;">0</span></h3>
+                    <div class="order-items" id="order-summary">
+                        <p class="empty-order">Ваш заказ пуст. Добавьте блюда из меню.</p>
+                    </div>
+                    <div class="order-total">
+                        Итого: <span id="order-total">0</span> руб.
+                    </div>
+                    <div class="order-actions">
+                        <button id="proceed-to-check" class="btn btn-primary">Перейти к оплате</button>
+                        <button id="clear-order" class="btn btn-secondary">Очистить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i>
+                        <h3>Иль-де-франс</h3>
+                    </div>
+                    <p>Французская кухня с 2010 года</p>
+                </div>
+                
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="menu.html">Меню</a></li>
+                        <li><a href="reservation.html">Бронь столика</a></li>
+                        <li><a href="check.html">Чек</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Мы в социальных сетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <p>Подпишитесь на наши новости и акции</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ресторан "Иль-де-франс". Все права защищены.</p>
+                <p>Техническое задание выполнено студентом М.Д. Масловым, группа 5996</p>
+                <p><a href="admin-login.html" class="admin-link"><i class="fas fa-lock"></i> Панель администратора</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загрузка заказа из хранилища
+            window.restaurantOrder.loadFromStorage();
+            
+            // Обновление интерфейса заказа
+            updateOrderSummary();
+            updateCartCount();
+            
+            // Инициализация обработчиков событий
+            initMenuEventHandlers();
+        });
+
+        function initMenuEventHandlers() {
+            // Обработчики для кнопок добавления в заказ
+            const addButtons = document.querySelectorAll('.add-to-order');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const menuItem = this.closest('.menu-item');
+                    const itemId = menuItem.dataset.id;
+                    const itemName = menuItem.dataset.name;
+                    const itemPrice = parseInt(menuItem.dataset.price);
+                    
+                    // Добавляем в заказ
+                    window.restaurantOrder.addItem({
+                        id: itemId,
+                        name: itemName,
+                        price: itemPrice
+                    });
+                    
+                    // Обновление интерфейса
+                    updateOrderSummary();
+                    updateCartCount();
+                    
+                    // Анимация добавления
+                    this.innerHTML = '<i class="fas fa-check"></i> Добавлено';
+                    this.classList.add('added');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-plus"></i> Добавить';
+                        this.classList.remove('added');
+                    }, 1500);
+                });
+            });
+            
+            // Очистка заказа
+            const clearOrderBtn = document.getElementById('clear-order');
+            if (clearOrderBtn) {
+                clearOrderBtn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите очистить заказ?')) {
+                        window.restaurantOrder.clear();
+                        updateOrderSummary();
+                        updateCartCount();
+                    }
+                });
+            }
+            
+            // Переход к оплате
+            const proceedToCheckBtn = document.getElementById('proceed-to-check');
+            if (proceedToCheckBtn) {
+                proceedToCheckBtn.addEventListener('click', function() {
+                    if (window.restaurantOrder.items.length === 0) {
+                        alert('Ваш заказ пуст. Добавьте блюда из меню.');
+                        return;
+                    }
+                    
+                    // Сохраняем заказ и переходим на страницу чека
+                    window.restaurantOrder.saveToStorage();
+                    window.location.href = 'check.html';
+                });
+            }
+        }
+
+        function updateOrderSummary() {
+            const orderSummary = document.getElementById('order-summary');
+            const totalElement = document.getElementById('order-total');
+            
+            if (!orderSummary || !totalElement) return;
+            
+            orderSummary.innerHTML = '';
+            
+            if (window.restaurantOrder.items.length === 0) {
+                orderSummary.innerHTML = '<p class="empty-order">Ваш заказ пуст. Добавьте блюда из меню.</p>';
+            } else {
+                window.restaurantOrder.items.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'order-item';
+                    itemElement.innerHTML = `
+                        <div class="order-item-info">
+                            <div class="order-item-name">${item.name}</div>
+                            <div class="order-item-quantity">x${item.quantity}</div>
+                        </div>
+                        <div class="order-item-actions">
+                            <span class="order-item-price">${(item.price * item.quantity).toFixed(0)} руб.</span>
+                            <button class="remove-order-item" data-index="${index}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    orderSummary.appendChild(itemElement);
+                });
+                
+                // Добавление обработчиков для кнопок удаления
+                document.querySelectorAll('.remove-order-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        window.restaurantOrder.items.splice(index, 1);
+                        window.restaurantOrder.calculateTotal();
+                        window.restaurantOrder.saveToStorage();
+                        updateOrderSummary();
+                        updateCartCount();
+                    });
+                });
+            }
+            
+            totalElement.textContent = window.restaurantOrder.total.toFixed(0);
+        }
+
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                const itemCount = window.restaurantOrder.getItemCount();
+                if (itemCount > 0) {
+                    cartCountElement.textContent = itemCount;
+                    cartCountElement.style.display = 'inline-flex';
+                } else {
+                    cartCountElement.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

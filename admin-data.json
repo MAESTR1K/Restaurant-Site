@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "restaurantName": "Иль-де-франс",
+    "address": "г. Великий Новгород, ул. Великая, д. 22",
+    "phone": "+7 (8162) 55-55-55",
+    "email": "info@iledefrance.ru",
+    "tables": 25,
+    "openingHours": {
+      "monday-thursday": "11:30-19:30",
+      "friday": "11:30-02:00",
+      "saturday": "17:00-02:00",
+      "sunday": "по предварительному заказу"
+    }
+  },
+  "adminUsers": [
+    {
+      "id": 1,
+      "username": "admin",
+      "passwordHash": "demo123",
+      "role": "superadmin",
+      "fullName": "Главный администратор",
+      "email": "admin@iledefrance.ru",
+      "lastLogin": "2024-01-15T14:30:00Z"
+    }
+  ],
+  "categories": [
+    { "id": 1, "name": "Закуски", "order": 1, "active": true },
+    { "id": 2, "name": "Основные блюда", "order": 2, "active": true },
+    { "id": 3, "name": "Десерты", "order": 3, "active": true },
+    { "id": 4, "name": "Напитки", "order": 4, "active": true }
+  ],
+  "tables": [
+    { "id": 1, "number": "1", "capacity": 2, "zone": "main", "status": "available" },
+    { "id": 2, "number": "2", "capacity": 4, "zone": "main", "status": "available" },
+    { "id": 3, "number": "3", "capacity": 2, "zone": "window", "status": "available" },
+    { "id": 4, "number": "4", "capacity": 6, "zone": "center", "status": "reserved" }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "categories": [
+    {
+      "id": "starters",
+      "name": "Закуски",
+      "description": "Традиционные французские закуски"
+    },
+    {
+      "id": "main",
+      "name": "Основные блюда",
+      "description": "Главные блюда французской кухни"
+    },
+    {
+      "id": "desserts",
+      "name": "Десерты",
+      "description": "Сладкие завершения трапезы"
+    },
+    {
+      "id": "drinks",
+      "name": "Напитки",
+      "description": "Вино, кофе и другие напитки"
+    }
+  ],
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Террин из утки",
+      "category": "Закуски",
+      "price": 890,
+      "description": "Террин из утиной печени с травами и коньяком, подается с тостами и ягодным соусом",
+      "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1480&q=80",
+      "weight": "250 г",
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "Луковый суп",
+      "category": "Закуски",
+      "price": 650,
+      "description": "Классический французский луковый суп с гренками и расплавленным сыром",
+      "image": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      "weight": "350 г",
+      "available": true
+    },
+    {
+      "id": 3,
+      "name": "Эскарго",
+      "category": "Закуски",
+      "price": 950,
+      "description": "Улитки по-бургундски с чесночным маслом и зеленью",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      "weight": "6 шт",
+      "available": true
+    },
+    {
+      "id": 4,
+      "name": "Утиная ножка конфи",
+      "category": "Основные блюда",
+      "price": 1850,
+      "description": "Утиная ножка, томленная в собственном жире с травами, подается с картофелем и соусом из красного вина",
+      "image": "https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      "weight": "450 г",
+      "available": true
+    },
+    {
+      "id": 5,
+      "name": "Беф бургиньон",
+      "category": "Основные блюда",
+      "price": 1650,
+      "description": "Тушеная говядина в красном вине с луком, морковью и грибами",
+      "image": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1476&q=80",
+      "weight": "400 г",
+      "available": true
+    },
+    {
+      "id": 6,
+      "name": "Рататуй",
+      "category": "Основные блюда",
+      "price": 1250,
+      "description": "Овощное рагу из баклажанов, кабачков, перцев и томатов с прованскими травами",
+      "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1481&q=80",
+      "weight": "350 г",
+      "available": true
+    },
+    {
+      "id": 7,
+      "name": "Крем-брюле",
+      "category": "Десерты",
+      "price": 750,
+      "description": "Ванильный крем с хрустящей карамельной корочкой",
+      "image": "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1374&q=80",
+      "weight": "180 г",
+      "available": true
+    },
+    {
+      "id": 8,
+      "name": "Профитроли",
+      "category": "Десерты",
+      "price": 850,
+      "description": "Заварные пирожные с кремом и шоколадным соусом",
+      "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1389&q=80",
+      "weight": "5 шт",
+      "available": true
+    },
+    {
+      "id": 9,
+      "name": "Тарт Татен",
+      "category": "Десерты",
+      "price": 790,
+      "description": "Яблочный пирог с карамелью, подается с шариком ванильного мороженого",
+      "image": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=1365&q=80",
+      "weight": "250 г",
+      "available": true
+    }
+  ]
+}

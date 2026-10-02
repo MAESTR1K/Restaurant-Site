@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в панель администратора - Иль-де-франс</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            background: linear-gradient(rgba(139, 69, 19, 0.9), rgba(139, 69, 19, 0.9)),
+                        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .login-logo {
+            margin-bottom: 30px;
+        }
+        
+        .login-logo i {
+            font-size: 3rem;
+            color: var(--primary-brown);
+            margin-bottom: 15px;
+        }
+        
+        .login-logo h1 {
+            color: var(--primary-brown);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .login-logo p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .login-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-brown);
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--dark-beige);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-brown);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--light-brown);
+        }
+        
+        .login-error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+        }
+        
+        .back-to-site {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .back-to-site a {
+            color: var(--primary-brown);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-to-site a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-crown"></i>
+                <h1>Иль-де-франс</h1>
+                <p>Панель администратора</p>
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Логин</label>
+                    <input type="text" id="username" class="form-control" placeholder="Введите логин" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Пароль</label>
+                    <input type="password" id="password" class="form-control" placeholder="Введите пароль" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+                
+                <div id="login-error" class="login-error">
+                    <i class="fas fa-exclamation-circle"></i> Неверный логин или пароль
+                </div>
+            </form>
+            
+            <div class="back-to-site">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Вернуться на сайт</a>
+            </div>
+            
+            <div class="login-info">
+                <p style="margin-top: 20px; font-size: 0.85rem; color: #666;">
+                    <i class="fas fa-info-circle"></i> Для демо-доступа используйте:<br>
+                    Логин: <strong>admin</strong><br>
+                    Пароль: <strong>admin123</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+            
+            const demoCredentials = {
+                username: 'admin',
+                password: 'admin123'
+            };
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                
+                if (username === demoCredentials.username && password === demoCredentials.password) {
+                  
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    localStorage.setItem('adminUsername', username);
+                    
+                    window.location.href = 'admin.html';
+                } else {
+                    
+                    loginError.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        loginError.style.display = 'none';
+                    }, 3000);
+                }
+            });
+            
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+        });
+    </script>
+</body>
+</html>

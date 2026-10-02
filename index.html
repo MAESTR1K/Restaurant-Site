@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ресторан "Иль-де-франс" - Французская кухня в Великом Новгороде</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Иль-де-франс</h1>
+                </div>
+                <p class="slogan">Вкус средневековой Франции в сердце Великого Новгорода</p>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="menu.html"><i class="fas fa-utensils"></i> Меню</a></li>
+                    <li><a href="reservation.html"><i class="fas fa-calendar-alt"></i> Бронь столика</a></li>
+                    <li><a href="check.html"><i class="fas fa-receipt"></i> Чек</a></li>
+                    <li><a href="#contacts"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-info">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <p>Пн-Чт: 11:30-19:30</p>
+                        <p>Пт: 11:30-02:00</p>
+                        <p>Сб: 17:00-02:00</p>
+                        <p>Вс: по предв. заказу</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <p>г. Великий Новгород</p>
+                        <p>ул. Великая, д. 22</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p>+7 (8162) 55-55-55</p>
+                        <p>info@iledefrance.ru</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Добро пожаловать в средневековую Францию</h2>
+                    <p>Ресторан французской кухни с атмосферой эпохи королей и рыцарей</p>
+                    <div class="hero-buttons">
+                        <a href="reservation.html" class="btn btn-primary">Забронировать столик</a>
+                        <a href="menu.html" class="btn btn-secondary">Посмотреть меню</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Наши преимущества</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-utensils"></i>
+                        <h3>Аутентичная кухня</h3>
+                        <p>Блюда, приготовленные по старинным французским рецептам</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-wine-glass-alt"></i>
+                        <h3>Винная карта</h3>
+                        <p>Более 100 наименований французских вин и напитков</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>120 посадочных мест</h3>
+                        <p>Просторные залы для любых мероприятий</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-music"></i>
+                        <h3>Живая музыка</h3>
+                        <p>По вечерам исполнение средневековой музыки</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>О ресторане</h2>
+                        <p>Ресторан "Иль-де-франс" предлагает своим гостям уникальное погружение в атмосферу средневековой Франции. Наши повара готовят блюда по рецептам, которые сохранились с эпохи короля Людовика XIV.</p>
+                        <p>Интерьер ресторана оформлен в стиле французского средневековья: каменные стены, дубовые столы, гобелены и кованые светильники создают неповторимую атмосферу.</p>
+                        <p>Мы принимаем заказы на проведение банкетов, свадеб и корпоративных мероприятий.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://avatars.mds.yandex.net/get-altay/1680678/2a0000016a2c41d9a5a95049011f215930ee/L_height" alt="Интерьер ресторана">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ГАЛЕРЕЯ ИНТЕРЬЕРА -->
+<section class="gallery-section">
+    <div class="container">
+        <h2>Интерьер ресторана</h2>
+        <p class="gallery-subtitle">Атмосфера средневековой Франции в каждой детали</p>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openGallery(this)">
+                <img src="https://avatars.mds.yandex.net/get-altay/1881714/2a0000016a2c4201e503c7d7bd3659c1af35/L_height" alt="Зал ресторана">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Главный зал</span>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openGallery(this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqYbxLKZRxTQc6lH_G9sPEtRPWltGWISKdW_WkbfmuWg&s=10" alt="Уютный уголок">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Каминный зал</span>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openGallery(this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJuxuzwmj7mrGkhd9MtpI3eH7HmzmM3vaD9fE3zh7FUQ&s=10" alt="Банкетный зал">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Банкетный зал</span>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openGallery(this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShzuar70VyGQNpTQhHhA9NiZoHDwIk2ETxK8BYQCWKzQ&s=10" alt="Винный погреб">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Винный погреб</span>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openGallery(this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhb8ckB1p-GKcON7AIFPuNNc61_a9jahNd5lfd0bBcPg&s=10" alt="Кухня">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Открытая кухня</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА ФОТО -->
+<div id="gallery-modal" class="gallery-modal" onclick="closeGallery()">
+    <span class="gallery-close">&times;</span>
+    <img class="gallery-modal-content" id="gallery-modal-img">
+    <div id="gallery-caption"></div>
+</div>
+
+        <section id="contacts" class="contacts">
+            <div class="container">
+                <h2>Контакты и реквизиты</h2>
+                <div class="contacts-grid">
+                    <div class="contact-info">
+                        <h3>Ресторан "Иль-де-франс"</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> г. Великий Новгород, ул. Великая, д. 22</p>
+                        <p><i class="fas fa-phone"></i> +7 (8162) 55-55-55</p>
+                        <p><i class="fas fa-envelope"></i> info@iledefrance.ru</p>
+                        
+                        <h4>График работы:</h4>
+                        <ul class="schedule">
+                            <li>Понедельник - четверг: с 11:30 до 19:30 (по предварительному заказу до 12:00)</li>
+                            <li>Пятница: с 11:30 до 02:00</li>
+                            <li>Суббота: с 17:00 до 02:00</li>
+                            <li>Воскресенье: по предварительному заказу с 17:00 до 12:00</li>
+                        </ul>
+                    </div>
+                    <div class="map">
+    <div class="map-container" id="map-container">
+        <!-- Яндекс.Карта через iframe (без API-ключа) -->
+        <iframe 
+            src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a2b3c4d5e6f7g8h9i0j&amp;source=constructor" 
+            width="100%" 
+            height="400" 
+            frameborder="0"
+            allowfullscreen="true"
+            style="border:0; border-radius: 8px;">
+        </iframe>
+        
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i>
+                        <h3>Иль-де-франс</h3>
+                    </div>
+                    <p>Французская кухня с 2010 года</p>
+                </div>
+                
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="menu.html">Меню</a></li>
+                        <li><a href="reservation.html">Бронь столика</a></li>
+                        <li><a href="check.html">Чек</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Мы в социальных сетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <p>Подпишитесь на наши новости и акции</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ресторан "Иль-де-франс". Все права защищены.</p>
+                <p>Техническое задание выполнено студентом М.Д. Масловым, группа 5996</p>
+                <p><a href="admin-login.html" class="admin-link"><i class="fas fa-lock"></i> Панель администратора</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Формирование чека - Ресторан "Иль-де-франс"</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .check-page {
+            padding: 60px 0;
+            background-color: var(--beige);
+            min-height: 100vh;
+        }
+        
+        .check-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .check-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .check-header h2 {
+            color: var(--primary-brown);
+        }
+        
+        .check-form {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+        
+        .check-items {
+            margin-bottom: 30px;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--beige);
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .item-name {
+            flex: 2;
+            font-weight: 500;
+        }
+        
+        .item-quantity {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid var(--dark-beige);
+            border-radius: 4px;
+            margin: 0 15px;
+        }
+        
+        .item-price {
+            flex: 1;
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary-brown);
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--light-brown);
+            cursor: pointer;
+            margin-left: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .check-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-brown);
+            margin: 25px 0;
+            padding-top: 20px;
+            border-top: 2px solid var(--dark-beige);
+        }
+        
+        .order-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--dark-beige);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-brown);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--dark-beige);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .check-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .check-actions .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-brown);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-brown);
+        }
+        
+        .success-message {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .empty-check-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+        
+        .empty-check-message i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--dark-beige);
+        }
+        
+        .empty-check-message a {
+            color: var(--primary-brown);
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 576px) {
+            .check-actions {
+                flex-direction: column;
+            }
+            
+            .check-actions .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Стили для печати чека */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            #print-section, #print-section * {
+                visibility: visible;
+            }
+            
+            #print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background: white;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Иль-де-франс</h1>
+                </div>
+                <p class="slogan">Вкус средневековой Франции в сердце Великого Новгорода</p>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="menu.html"><i class="fas fa-utensils"></i> Меню</a></li>
+                    <li><a href="reservation.html"><i class="fas fa-calendar-alt"></i> Бронь столика</a></li>
+                    <li><a href="check.html" class="active"><i class="fas fa-receipt"></i> Чек</a></li>
+                    <li><a href="index.html#contacts"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-info">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <p>Пн-Чт: 11:30-19:30</p>
+                        <p>Пт: 11:30-02:00</p>
+                        <p>Сб: 17:00-02:00</p>
+                        <p>Вс: по предв. заказу</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <p>г. Великий Новгород</p>
+                        <p>ул. Великая, д. 22</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p>+7 (8162) 55-55-55</p>
+                        <p>info@iledefrance.ru</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="check-page">
+        <div class="container">
+            <div class="check-container">
+                <div class="check-header">
+                    <h2>Создание заказа и формирование чека</h2>
+                    <p>Оформите заказ для передачи на кухню</p>
+                </div>
+                
+                <div class="check-form no-print">
+                    <h3><i class="fas fa-shopping-cart"></i> Ваш заказ</h3>
+                    
+                    <div class="check-items" id="check-items-container">
+                        <div class="empty-check-message">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Ваш заказ пуст</p>
+                            <p>Добавьте блюда из <a href="menu.html">меню</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="check-total">
+                        Итого: <span id="check-total">0</span> руб.
+                    </div>
+                    
+                    <div class="order-form">
+                        <h4><i class="fas fa-user"></i> Информация для заказа</h4>
+                        <div class="form-group">
+                            <label for="order-customer-name">Ваше имя *</label>
+                            <input type="text" id="order-customer-name" class="form-control" placeholder="Иван Иванов" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-table">Номер столика</label>
+                            <input type="text" id="order-table" class="form-control" placeholder="Не указан">
+                        </div>
+                        <div class="form-group">
+                            <label for="order-notes">Примечания к заказу</label>
+                            <textarea id="order-notes" class="form-control" rows="3" placeholder="Особые пожелания, аллергии и т.д."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="check-actions">
+                        <button id="create-order-btn" class="btn btn-success">
+                            <i class="fas fa-check-circle"></i> Создать заказ
+                        </button>
+                        <button id="print-check-btn" class="btn btn-primary">
+                            <i class="fas fa-print"></i> Распечатать чек
+                        </button>
+                        <button id="clear-order-btn" class="btn" style="background-color: #e74c3c; color: white;">
+                            <i class="fas fa-trash"></i> Очистить
+                        </button>
+                    </div>
+                    
+                    <div id="success-message" class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Заказ успешно создан!</h4>
+                        <p>Ваш заказ передан на кухню и появится в панели администратора.</p>
+                        <p id="order-details"></p>
+                        <button id="print-success-check" class="btn btn-primary btn-sm" style="margin-top: 10px;">
+                            <i class="fas fa-print"></i> Распечатать чек
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Секция для печати -->
+                <div id="print-section" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2>Ресторан "Иль-де-франс"</h2>
+                        <p>г. Великий Новгород, ул. Великая, д. 22</p>
+                        <p>Тел: +7 (8162) 55-55-55</p>
+                        <hr>
+                        <p>Чек №: <span id="print-order-id">000000</span></p>
+                        <p>Дата: <span id="print-date">01.01.2024</span></p>
+                        <p>Время: <span id="print-time">12:00</span></p>
+                        <hr>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <p>Клиент: <strong id="print-customer">Гость</strong></p>
+                        <p>Столик: <span id="print-table">—</span></p>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; border-bottom: 1px solid #000; padding: 5px 0;">Наименование</th>
+                                <th style="text-align: center; border-bottom: 1px solid #000; padding: 5px 0;">Кол-во</th>
+                                <th style="text-align: right; border-bottom: 1px solid #000; padding: 5px 0;">Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody id="print-items">
+                            <!-- Товары будут добавлены через JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align: right; padding: 10px 0; border-top: 2px solid #000;"><strong>ИТОГО:</strong></td>
+                                <td style="text-align: right; padding: 10px 0; border-top: 2px solid #000;"><strong id="print-total">0 руб.</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <div style="margin-top: 30px; text-align: center;">
+                        <p>Спасибо за заказ!</p>
+                        <p>Приходите к нам снова!</p>
+                        <hr>
+                        <p style="font-size: 12px;">Официант: <span id="print-waiter">—</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i>
+                        <h3>Иль-де-франс</h3>
+                    </div>
+                    <p>Французская кухня с 2010 года</p>
+                </div>
+                
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="menu.html">Меню</a></li>
+                        <li><a href="reservation.html">Бронь столика</a></li>
+                        <li><a href="check.html">Чек</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Мы в социальных сетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <p>Подпишитесь на наши новости и акции</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ресторан "Иль-де-франс". Все права защищены.</p>
+                <p>Техническое задание выполнено студентом М.Д. Масловым, группа 5996</p>
+            </div>
+            
+            <div class="admin-access">
+                <p><a href="admin-login.html" class="admin-link"><i class="fas fa-lock"></i> Панель администратора</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загружаем заказ из сайта
+            loadOrderFromSite();
+            
+            // Инициализируем обработчики
+            initEventHandlers();
+        });
+
+        function loadOrderFromSite() {
+            // Пробуем загрузить заказ из сайта
+            const siteOrder = localStorage.getItem('siteOrder');
+            if (siteOrder) {
+                try {
+                    const orderData = JSON.parse(siteOrder);
+                    displayOrderItems(orderData.items);
+                    updateTotal(orderData.total);
+                } catch (e) {
+                    console.error('Ошибка загрузки заказа:', e);
+                }
+            }
+        }
+
+        function displayOrderItems(items) {
+            const container = document.getElementById('check-items-container');
+            if (!container) return;
+            
+            if (!items || items.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-check-message">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Ваш заказ пуст</p>
+                        <p>Добавьте блюда из <a href="menu.html">меню</a></p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            items.forEach((item, index) => {
+                html += `
+                    <div class="check-item">
+                        <span class="item-name">${item.name}</span>
+                        <input type="number" class="item-quantity" value="${item.quantity}" min="1" data-index="${index}">
+                        <span class="item-price">${item.price * item.quantity} руб.</span>
+                        <button class="remove-item" data-index="${index}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Добавляем обработчики для элементов
+            document.querySelectorAll('.item-quantity').forEach(input => {
+                input.addEventListener('change', updateItemQuantity);
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', removeItem);
+            });
+        }
+
+        function updateTotal(total) {
+            const totalElement = document.getElementById('check-total');
+            if (totalElement) {
+                totalElement.textContent = total;
+            }
+        }
+
+        function initEventHandlers() {
+            // Кнопка создания заказа
+            const createOrderBtn = document.getElementById('create-order-btn');
+            if (createOrderBtn) {
+                createOrderBtn.addEventListener('click', createOrder);
+            }
+            
+            // Кнопка печати чека
+            const printCheckBtn = document.getElementById('print-check-btn');
+            if (printCheckBtn) {
+                printCheckBtn.addEventListener('click', printCheck);
+            }
+            
+            // Кнопка печати после успеха
+            const printSuccessCheckBtn = document.getElementById('print-success-check');
+            if (printSuccessCheckBtn) {
+                printSuccessCheckBtn.addEventListener('click', printCheck);
+            }
+            
+            // Кнопка очистки
+            const clearOrderBtn = document.getElementById('clear-order-btn');
+            if (clearOrderBtn) {
+                clearOrderBtn.addEventListener('click', clearOrder);
+            }
+        }
+
+        function createOrder() {
+            // Получаем данные формы
+            const customerName = document.getElementById('order-customer-name').value.trim();
+            if (!customerName) {
+                alert('Пожалуйста, введите ваше имя');
+                return;
+            }
+            
+            const table = document.getElementById('order-table').value.trim() || '—';
+            const notes = document.getElementById('order-notes').value.trim();
+            
+            // Получаем текущий заказ из сайта
+            const siteOrder = localStorage.getItem('siteOrder');
+            if (!siteOrder) {
+                alert('Ваш заказ пуст');
+                return;
+            }
+            
+            try {
+                const orderData = JSON.parse(siteOrder);
+                
+                // Создаем объект заказа для админки
+                const adminOrder = {
+                    id: 'ORD-' + Date.now().toString().slice(-8),
+                    customerName: customerName,
+                    phone: '—',
+                    table: table,
+                    items: orderData.items,
+                    total: orderData.total,
+                    status: 'active',
+                    timestamp: new Date().toISOString(),
+                    payment: 'ожидает',
+                    notes: notes,
+                    waiter: '—'
+                };
+                
+                // Сохраняем заказ в админку
+                saveOrderToAdmin(adminOrder);
+                
+                // Показываем сообщение об успехе
+                showSuccessMessage(adminOrder);
+                
+                // Очищаем заказ на сайте
+                localStorage.removeItem('siteOrder');
+                
+            } catch (e) {
+                console.error('Ошибка создания заказа:', e);
+                alert('Ошибка создания заказа');
+            }
+        }
+
+        function saveOrderToAdmin(order) {
+            try {
+                // Получаем текущие данные админки
+                let adminData = localStorage.getItem('adminData');
+                let adminOrders = [];
+                
+                if (adminData) {
+                    try {
+                        const parsedData = JSON.parse(adminData);
+                        adminOrders = parsedData.orders || [];
+                    } catch (e) {
+                        console.error('Ошибка парсинга adminData:', e);
+                        adminOrders = [];
+                    }
+                }
+                
+                // Добавляем новый заказ
+                adminOrders.push(order);
+                
+                // Обновляем данные админки
+                if (adminData) {
+                    const parsedData = JSON.parse(adminData);
+                    parsedData.orders = adminOrders;
+                    localStorage.setItem('adminData', JSON.stringify(parsedData));
+                } else {
+                    // Если данных админки нет - создаем
+                    const newAdminData = {
+                        orders: [order],
+                        menu: [],
+                        reservations: [],
+                        analytics: { daily: [], weekly: [], monthly: [] }
+                    };
+                    localStorage.setItem('adminData', JSON.stringify(newAdminData));
+                }
+                
+                console.log('Заказ сохранен в админку:', order);
+                return true;
+            } catch (error) {
+                console.error('Ошибка сохранения заказа в админку:', error);
+                return false;
+            }
+        }
+
+        function showSuccessMessage(order) {
+            const successMessage = document.getElementById('success-message');
+            const orderDetails = document.getElementById('order-details');
+            const checkActions = document.querySelector('.check-actions');
+            const orderForm = document.querySelector('.order-form');
+            
+            if (successMessage && orderDetails) {
+                // Заполняем детали заказа
+                orderDetails.innerHTML = `
+                    <strong>Номер заказа:</strong> ${order.id}<br>
+                    <strong>Имя:</strong> ${order.customerName}<br>
+                    <strong>Столик:</strong> ${order.table}<br>
+                    <strong>Сумма:</strong> ${order.total} руб.
+                `;
+                
+                // Показываем сообщение
+                successMessage.style.display = 'block';
+                
+                // Скрываем кнопки действий и форму
+                if (checkActions) {
+                    checkActions.style.display = 'none';
+                }
+                if (orderForm) {
+                    orderForm.style.display = 'none';
+                }
+                
+                // Прокручиваем к сообщению
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function printCheck() {
+            // Получаем данные заказа
+            const siteOrder = localStorage.getItem('siteOrder');
+            const customerName = document.getElementById('order-customer-name').value.trim() || 'Гость';
+            const table = document.getElementById('order-table').value.trim() || '—';
+            
+            let orderData = null;
+            if (siteOrder) {
+                try {
+                    orderData = JSON.parse(siteOrder);
+                } catch (e) {
+                    console.error('Ошибка загрузки заказа для печати:', e);
+                }
+            }
+            
+            // Если нет заказа - проверяем успешный заказ
+            if (!orderData) {
+                const orderDetails = document.getElementById('order-details');
+                if (orderDetails && orderDetails.textContent.includes('Номер заказа')) {
+                    // Парсим данные из сообщения об успехе
+                    const text = orderDetails.textContent;
+                    const orderIdMatch = text.match(/Номер заказа:\s*([^\n]+)/);
+                    const nameMatch = text.match(/Имя:\s*([^\n]+)/);
+                    const tableMatch = text.match(/Столик:\s*([^\n]+)/);
+                    const totalMatch = text.match(/Сумма:\s*([^\n]+)/);
+                    
+                    orderData = {
+                        id: orderIdMatch ? orderIdMatch[1].trim() : 'ORD-' + Date.now().toString().slice(-8),
+                        customerName: nameMatch ? nameMatch[1].trim() : customerName,
+                        table: tableMatch ? tableMatch[1].trim() : table,
+                        items: [],
+                        total: totalMatch ? parseFloat(totalMatch[1].trim()) : 0
+                    };
+                }
+            }
+            
+            if (!orderData || orderData.items.length === 0) {
+                alert('Нет данных для печати чека. Сначала создайте заказ.');
+                return;
+            }
+            
+            // Подготавливаем данные для печати
+            preparePrintData(orderData, customerName, table);
+            
+            // Показываем секцию для печати и запускаем печать
+            setTimeout(() => {
+                const printSection = document.getElementById('print-section');
+                printSection.style.display = 'block';
+                
+                window.print();
+                
+                // Возвращаем секцию в скрытое состояние
+                setTimeout(() => {
+                    printSection.style.display = 'none';
+                }, 100);
+            }, 100);
+        }
+
+        function preparePrintData(orderData, customerName, table) {
+            const now = new Date();
+            
+            // Заполняем данные в секции печати
+            document.getElementById('print-order-id').textContent = orderData.id;
+            document.getElementById('print-date').textContent = now.toLocaleDateString('ru-RU');
+            document.getElementById('print-time').textContent = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('print-customer').textContent = customerName;
+            document.getElementById('print-table').textContent = table;
+            
+            // Заполняем товары
+            const itemsContainer = document.getElementById('print-items');
+            itemsContainer.innerHTML = '';
+            
+            orderData.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 5px 0;">${item.name}</td>
+                    <td style="text-align: center; padding: 5px 0;">${item.quantity}</td>
+                    <td style="text-align: right; padding: 5px 0;">${item.price * item.quantity} руб.</td>
+                `;
+                itemsContainer.appendChild(row);
+            });
+            
+            // Устанавливаем итоговую сумму
+            document.getElementById('print-total').textContent = orderData.total + ' руб.';
+            
+            // Случайный официант
+            const waiters = ['Анна', 'Сергей', 'Мария', 'Дмитрий', 'Ольга'];
+            const randomWaiter = waiters[Math.floor(Math.random() * waiters.length)];
+            document.getElementById('print-waiter').textContent = randomWaiter;
+        }
+
+        function clearOrder() {
+            if (confirm('Очистить весь заказ?')) {
+                localStorage.removeItem('siteOrder');
+                loadOrderFromSite();
+                alert('Заказ очищен');
+            }
+        }
+
+        function updateItemQuantity(e) {
+            // Обновление количества товара
+            const index = e.target.getAttribute('data-index');
+            const quantity = parseInt(e.target.value) || 1;
+            
+            const siteOrder = localStorage.getItem('siteOrder');
+            if (siteOrder) {
+                try {
+                    const orderData = JSON.parse(siteOrder);
+                    orderData.items[index].quantity = quantity;
+                    
+                    // Пересчитываем общую сумму
+                    orderData.total = orderData.items.reduce((sum, item) => {
+                        return sum + (item.price * item.quantity);
+                    }, 0);
+                    
+                    localStorage.setItem('siteOrder', JSON.stringify(orderData));
+                    displayOrderItems(orderData.items);
+                    updateTotal(orderData.total);
+                } catch (e) {
+                    console.error('Ошибка обновления количества:', e);
+                }
+            }
+        }
+
+        function removeItem(e) {
+            const index = e.target.closest('.remove-item').getAttribute('data-index');
+            
+            const siteOrder = localStorage.getItem('siteOrder');
+            if (siteOrder) {
+                try {
+                    const orderData = JSON.parse(siteOrder);
+                    orderData.items.splice(index, 1);
+                    
+                    if (orderData.items.length === 0) {
+                        localStorage.removeItem('siteOrder');
+                        loadOrderFromSite();
+                    } else {
+                        // Пересчитываем общую сумму
+                        orderData.total = orderData.items.reduce((sum, item) => {
+                            return sum + (item.price * item.quantity);
+                        }, 0);
+                        
+                        localStorage.setItem('siteOrder', JSON.stringify(orderData));
+                        displayOrderItems(orderData.items);
+                        updateTotal(orderData.total);
+                    }
+                } catch (e) {
+                    console.error('Ошибка удаления товара:', e);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
